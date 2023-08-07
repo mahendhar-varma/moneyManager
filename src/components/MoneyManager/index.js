@@ -18,7 +18,7 @@ const transactionTypeOptions = [
 class MoneyManager extends Component {
   state = {
     amount: '',
-    type: transactionTypeOptions[0].optionId,
+    type: transactionTypeOptions[0].displayText,
     title: '',
     transactionDetails: [],
     balance: 0,
@@ -38,7 +38,7 @@ class MoneyManager extends Component {
       type,
     }
 
-    if (type === 'EXPENSES') {
+    if (type === 'Expenses') {
       this.setState(prevState => ({
         transactionDetails: [...prevState.transactionDetails, newTransaction],
         balance: prevState.balance - parseInt(amount),
@@ -46,7 +46,7 @@ class MoneyManager extends Component {
         expenses: prevState.expenses + parseInt(amount),
         amount: '',
         title: '',
-        type: transactionTypeOptions[0].optionId,
+        type: transactionTypeOptions[0].displayText,
       }))
     } else {
       this.setState(prevState => ({
@@ -56,7 +56,7 @@ class MoneyManager extends Component {
         expenses,
         amount: '',
         title: '',
-        type: transactionTypeOptions[0].optionId,
+        type: transactionTypeOptions[0].displayText,
       }))
     }
   }
@@ -70,9 +70,16 @@ class MoneyManager extends Component {
   }
 
   addType = event => {
-    this.setState({
-      type: event.target.value,
-    })
+    const requiredValue = event.target.value
+    if (requiredValue === 'EXPENSES') {
+      this.setState({
+        type: 'Expenses',
+      })
+    } else {
+      this.setState({
+        type: 'Income',
+      })
+    }
   }
 
   onDeleteTransaction = id => {
@@ -86,7 +93,7 @@ class MoneyManager extends Component {
     )
     const {amount, type} = filteredMoneyDetails
 
-    if (type === 'EXPENSES') {
+    if (type === 'Expenses') {
       this.setState(prevState => ({
         transactionDetails: filteredTransactions,
         balance: prevState.balance + parseInt(amount),
